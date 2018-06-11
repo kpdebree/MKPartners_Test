@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>MKPartners Test</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<h1>Press the Button</h1>
+<button id="Submit">Submit Get Request</button>
+
+<button id="Submit2">Submit Post Request</button>
+
+<h2>Ready?</h2>
+
+</html>
+
+
+<script>
+	//positionId=a0M30000002YpaWEAS
+	var const_url = 'https://mkpartners.secure.force.com/services/apexrest/careers?';
+	var proxy_url = 'https://cors-anywhere.herokuapp.com/';
+	var query_url = proxy_url + const_url;
+	var data = {firstName: "Kevin", lastName: "de Bree", email: "kpdebree@gmail.com"}
+
+function SubmitGetRequest() {
+	console.log("Sending")
+	var response;
+	$.ajax({
+		type: "GET",
+		crossDomain: true,
+		url: const_url,
+		data: {firstName: "Kevin", lastName: "de Bree", email: "kpdebree@gmail.com"},
+		success: function (XMLHttpRequest, result) {
+			console.log(XMLHttpRequest)
+			response = result;
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			response = "err--" + XMLHttpRequest.status + " -- " + XMLHttpRequest.statusText;
+		}
+	});
+	return response;
+	console.log(response);
+};
+
+function SubmitPostRequest() {
+	console.log("Sending")
+	var response;
+	var submit_url = query_url + $.param( data, true);
+	console.log(submit_url);
+	var application = {
+				isTest: true,
+				positionId: "a0M30000002YpaW",
+				firstName: "Kevin",
+				lastName: "de Bree",
+				email: "kpdebree@gmail.com",
+				phone: "(661) 645-4807",
+				zipcode: "91355",
+				describeYourself: "Recent graduate of Web Development Bootcamp. Previous 2 years as a Research Analyst with background in Data",
+				ool: {languageName: "JavaScript", proficiency: 10},
+				education: {school: "UCSB", graduationYear: 2015, degree: "Bachelor's of Arts", major: "Economics and History"},
+				experience: {company: "NAI Capital", fromDate: "2016-03-15", toDate: "2018-06-07", title: "Research Analyst", workDone: "Built CRM Database, coordinated with Database Vendor"},
+				certification: {certification: "Full Stack Web Development Certificate from UCLA Extension", dateCertified: "2018-02-10"}
+			};
+
+	$.ajax({
+		type: "POST",
+		crossDomain: true,
+		url: submit_url,
+		data: application,
+		success: function (XMLHttpRequest, result) {
+			response = XMLHttpRequest.status + " -- " + XMLHttpRequest.statusText;
+		},
+		error: function (XMLHttpRequest, textStatus, errorThrown) {
+			response = "err--" + XMLHttpRequest.status + " -- " + XMLHttpRequest.statusText;
+		}
+	});
+	return response;
+	console.log(response);
+	
+}
+
+
+$(document).on("click", "#Submit", SubmitGetRequest)
+
+$(document).on("click", "#Submit2", SubmitPostRequest)
+
+</script>
